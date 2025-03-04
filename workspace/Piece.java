@@ -20,7 +20,7 @@ public class Piece {
         
         try {
             if (this.img == null) {
-              this.img = ImageIO.read(new File(img_file));
+              this.img = ImageIO.read(getClass().getResource(img_file));
             }
           } catch (IOException e) {
             System.out.println("File not found: " + e.getMessage());
@@ -49,8 +49,25 @@ public class Piece {
     // TO BE IMPLEMENTED!
     //return a list of every square that is "controlled" by this piece. A square is controlled
     //if the piece capture into it legally.
-    public ArrayList<Square> getControlledSquares(Square[][] board, Square start) {
-     return null;
+    public ArrayList<Square> getControlledSquares(Board b, Square start) {
+      ArrayList<Square> tile = new ArrayList<Square>(); 
+      if (color == true){
+      if(start.getCol() != 7){
+        tile.add(b.getSquareArray()[start.getRow() - 1][start.getCol() + 1]);
+        }
+      if (start.getCol() != 0){
+        tile.add(b.getSquareArray()[start.getRow() - 1][start.getCol() - 1]);
+      }
+    }
+      if (color == false){
+        if(start.getCol() != 7){
+          tile.add(b.getSquareArray()[start.getRow() + 1][start.getCol() + 1]);
+          }
+        if (start.getCol() != 0){
+          tile.add(b.getSquareArray()[start.getRow() + 1][start.getCol() - 1]);
+        }
+      }
+      return tile;
     }
     
 
@@ -61,6 +78,49 @@ public class Piece {
     //please note that your piece must have some sort of logic. Just being able to move to every square on the board is not
     //going to score any points.
     public ArrayList<Square> getLegalMoves(Board b, Square start){
-    	return null;
+      ArrayList<Square> tile = new ArrayList<Square>(); 
+      if(color == true){
+      //if moving for the first time 
+      int potential = start.getRow();
+      potential = potential - 1;
+      if(b.getSquareArray()[potential][start.getCol()].isOccupied() == false){
+        tile.add(b.getSquareArray()[potential][start.getCol()]);
+        }
+      if (start.getRow() == 6){
+        potential = potential - 1;
+        if(b.getSquareArray()[potential][start.getCol()].isOccupied() == false){
+          tile.add(b.getSquareArray()[potential][start.getCol()]);
+          }
+      }
+      if (start.getCol() != 0 && b.getSquareArray()[start.getRow() - 1][start.getCol() - 1].isOccupied() && b.getSquareArray()[start.getRow() - 1][start.getCol() - 1].getOccupyingPiece().getColor() == false) {
+          tile.add(b.getSquareArray()[start.getRow() - 1][start.getCol() - 1]);
+      }
+      if (start.getCol() != 7 && b.getSquareArray()[start.getRow() - 1][start.getCol() + 1].isOccupied() && b.getSquareArray()[start.getRow() - 1][start.getCol() + 1].getOccupyingPiece().getColor() == false) {
+        tile.add(b.getSquareArray()[start.getRow() - 1][start.getCol() + 1]);
     }
+      
+    }
+    if(color == false){
+      //if moving for the first time
+      int potential = start.getRow();
+      potential = potential + 1;
+      if(b.getSquareArray()[potential][start.getCol()].isOccupied() == false){
+        tile.add(b.getSquareArray()[potential][start.getCol()]);
+        }
+      if (start.getRow() == 1){
+        potential = potential + 1;
+        if(b.getSquareArray()[potential][start.getCol()].isOccupied() == false){
+          tile.add(b.getSquareArray()[potential][start.getCol()]);
+          }
+      }
+      if (start.getCol() != 0 && b.getSquareArray()[start.getRow() + 1][start.getCol() - 1].isOccupied() && b.getSquareArray()[start.getRow() + 1][start.getCol()- 1].getOccupyingPiece().getColor() == true) {
+        tile.add(b.getSquareArray()[start.getRow() + 1][start.getCol() - 1]);
+    }
+    if (start.getCol() != 7 && b.getSquareArray()[start.getRow() + 1][start.getCol() + 1].isOccupied() && b.getSquareArray()[start.getRow() + 1][start.getCol() + 1].getOccupyingPiece().getColor() == true) {
+      tile.add(b.getSquareArray()[start.getRow() + 1][start.getCol() + 1]);
+  }
+    }
+    
+    return tile;
+  }
 }

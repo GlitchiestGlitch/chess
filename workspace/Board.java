@@ -60,7 +60,23 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 
         //TO BE IMPLEMENTED FIRST
      
-      //for (.....)  
+      for (int row = 0; row < board.length; row++){
+        for (int col = 0; col < board.length; col++){
+            if (row%2 == 1 && col%2 == 1){
+            board[row][col]= new Square(this, true, row, col);
+            }
+            if (row%2 == 0 && col%2 ==1){
+                board[row][col]= new Square(this, false, row, col);
+                }
+            if (row%2 == 1 && col%2 == 0){
+                board[row][col]= new Square(this, false, row, col);
+            }
+            if (row%2 == 0 && col%2 == 0){
+                board[row][col]= new Square(this, true, row, col);
+            }
+            this.add(board[row][col]); 
+        }
+      }  
 //        	populate the board with squares here. Note that the board is composed of 64 squares alternating from 
 //        	white to black.
 
@@ -81,8 +97,31 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 	//it's up to you how you wish to arrange your pieces.
     private void initializePieces() {
     	
-    	board[0][0].put(new Piece(true, RESOURCES_WKING_PNG));
+    	board[7][4].put(new Piece(true, RESOURCES_WKING_PNG));
+        board[7][0].put(new Piece(true, RESOURCES_WROOK_PNG));
+        board[7][7].put(new Piece(true, RESOURCES_WROOK_PNG));
+        board[7][1].put(new Piece(true, RESOURCES_WKNIGHT_PNG));
+        board[7][6].put(new Piece(true, RESOURCES_WKNIGHT_PNG));
+        board[7][2].put(new Piece(true, RESOURCES_WBISHOP_PNG));
+        board[7][5].put(new Piece(true, RESOURCES_WBISHOP_PNG));
+        board[7][3].put(new Piece(true, RESOURCES_WQUEEN_PNG));
+        board[0][4].put(new Piece(false, RESOURCES_BKING_PNG));
+        board[0][0].put(new Piece(false, RESOURCES_BROOK_PNG));
+        board[0][7].put(new Piece(false, RESOURCES_BROOK_PNG));
+        board[0][1].put(new Piece(false, RESOURCES_BKNIGHT_PNG));
+        board[0][6].put(new Piece(false, RESOURCES_BKNIGHT_PNG));
+        board[0][2].put(new Piece(false, RESOURCES_BBISHOP_PNG));
+        board[0][5].put(new Piece(false, RESOURCES_BBISHOP_PNG));
+        board[0][3].put(new Piece(false, RESOURCES_BQUEEN_PNG));
+        
 
+            for (int col = 0; col < board.length; col++){
+                board[6][col].put(new Piece(true, RESOURCES_WPAWN_PNG));
+            }
+            for (int col = 0; col < board.length; col++){
+                board[1][col].put(new Piece(false, RESOURCES_BPAWN_PNG));
+            }
+          
     }
 
     public Square[][] getSquareArray() {
@@ -151,7 +190,21 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
         Square endSquare = (Square) this.getComponentAt(new Point(e.getX(), e.getY()));
         
         //using currPiece
-        
+        if (currPiece != null && whiteTurn == currPiece.getColor()){
+        for (Square tile : currPiece.getLegalMoves(this, fromMoveSquare)){
+        if (endSquare == tile){
+        fromMoveSquare.put(null);
+        endSquare.put(currPiece);
+        whiteTurn = !whiteTurn;
+        }
+        }
+    }
+        for (int row = 0; row < 8; row++){
+            for (int col = 0; col < 8; col++){
+                board[row][col].setBorder(BorderFactory.createLineBorder(null));
+            }
+        }
+
        
         fromMoveSquare.setDisplay(true);
         currPiece = null;
@@ -162,8 +215,19 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
     public void mouseDragged(MouseEvent e) {
         currX = e.getX() - 24;
         currY = e.getY() - 24;
-
+        ArrayList<Square> moves = currPiece.getLegalMoves(this, fromMoveSquare);
+        if(currPiece != null && whiteTurn == currPiece.getColor()){
+            for (int i = 0; i < moves.size(); i++){
+                Square potentialSquare = moves.get(i);
+                potentialSquare.setBorder(BorderFactory.createLineBorder(Color.blue));
+            }
+            ArrayList<Square> control = currPiece.getControlledSquares(this, fromMoveSquare);
+            for (int i = 0; i <control.size(); i++){
+                Square potentialSquare = control.get(i);
+                potentialSquare.setBorder(BorderFactory.createLineBorder(Color.red));
+            }
         repaint();
+        }
     }
 
     @Override
