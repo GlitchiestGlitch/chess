@@ -185,6 +185,8 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
     //should move the piece to the desired location only if this is a legal move.
     //use the pieces "legal move" function to determine if this move is legal, then complete it by
     //moving the new piece to it's new board location. 
+    //Pre-Condition: User must click on a piece, and move it to the a legal square.
+    //Post-Condition: Will move the piece to the new square, and change the turns.
     @Override
     public void mouseReleased(MouseEvent e) {
         Square endSquare = (Square) this.getComponentAt(new Point(e.getX(), e.getY()));
@@ -211,6 +213,8 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
         repaint();
     }
 
+    //Pre-Condition: User must click on a piece
+    //Post-Condition: Controlled squares will be highlighted red, and legal moves blue.
     @Override
     public void mouseDragged(MouseEvent e) {
         currX = e.getX() - 24;

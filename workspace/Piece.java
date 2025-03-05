@@ -49,6 +49,8 @@ public class Piece {
     // TO BE IMPLEMENTED!
     //return a list of every square that is "controlled" by this piece. A square is controlled
     //if the piece capture into it legally.
+    //Pre-Condition: Takes into two argument, the board itself alongside the starting square for the piece. User must click on this piece.
+    //Post-condition: Returns a list of tiles which the piece we are currently looking at controls.
     public ArrayList<Square> getControlledSquares(Board b, Square start) {
       ArrayList<Square> tile = new ArrayList<Square>(); 
       if (color == true){
@@ -77,6 +79,8 @@ public class Piece {
     //returns an arraylist of squares which are legal to move to
     //please note that your piece must have some sort of logic. Just being able to move to every square on the board is not
     //going to score any points.
+    //Pre-Condition: Takes in the board itself, alongside the starting square of the piece. This piece must be a pawn. User must click on this piece.
+    //Post-Condition: Will return a list of legal moves, which from the current postion the pawn can move to.
     public ArrayList<Square> getLegalMoves(Board b, Square start){
       ArrayList<Square> tile = new ArrayList<Square>(); 
       if(color == true){
