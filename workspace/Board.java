@@ -116,10 +116,10 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
         
 
             for (int col = 0; col < board.length; col++){
-                board[6][col].put(new Piece(true, RESOURCES_WPAWN_PNG));
+                board[6][col].put(new Pawn(true, RESOURCES_WPAWN_PNG));
             }
             for (int col = 0; col < board.length; col++){
-                board[1][col].put(new Piece(false, RESOURCES_BPAWN_PNG));
+                board[1][col].put(new Pawn(false, RESOURCES_BPAWN_PNG));
             }
           
     }
@@ -201,6 +201,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
         }
         }
     }
+    if (currPiece != null){
         for (int row = 0; row < 8; row++){
             for (int col = 0; col < 8; col++){
                 board[row][col].setBorder(BorderFactory.createLineBorder(null));
@@ -212,11 +213,13 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
         currPiece = null;
         repaint();
     }
+    }
 
     //Pre-Condition: User must click on a piece
     //Post-Condition: Controlled squares will be highlighted red, and legal moves blue.
-    @Override
+    @Override 
     public void mouseDragged(MouseEvent e) {
+        if (currPiece != null){
         currX = e.getX() - 24;
         currY = e.getY() - 24;
         ArrayList<Square> moves = currPiece.getLegalMoves(this, fromMoveSquare);
@@ -225,13 +228,14 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
                 Square potentialSquare = moves.get(i);
                 potentialSquare.setBorder(BorderFactory.createLineBorder(Color.blue));
             }
-            ArrayList<Square> control = currPiece.getControlledSquares(this, fromMoveSquare);
+            ArrayList<Square> control = currPiece.getControlledSquares(this.board, fromMoveSquare);
             for (int i = 0; i <control.size(); i++){
                 Square potentialSquare = control.get(i);
                 potentialSquare.setBorder(BorderFactory.createLineBorder(Color.red));
             }
         repaint();
         }
+    }
     }
 
     @Override
